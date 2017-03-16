@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>面试题：ORMLite的使用</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h1>面试题：ORMLite数据库使用流程及场景</h1>
+<p>在项目开发中，我们常常会使用到数据库，一般数据库使用场景用于存储。在Android中主要使用SQLite数据库，但SQLite难免有些繁琐，所以我们采用ORMLite，简化使用。</p>
+<ul>
+<li>
+索引
+<ul>
+<li><a href="#1">简介</a></li>
+<li><a href="#2">使用过程</a></li>
+<li><a href="#3">使用场景</a></li>
+</ul>
+</li>
+</ul>
+<h2 id=1>简介</h2>
+<p>ORM它的英文全称是Object Relational Mapping，是对象关系映射（Object Relational Mapping）的缩写，对象和关系数据是业务实体的两种表现形式，业务实体在内存中表现为对象，在数据库中表现为关系数据，ORM实现了对象和关系数据库之间的转换，简单来说，就是我们定义一个实体类，利用这个框架，它可以帮我们把这个实体映射到我们的数据库中，对应一个数据库表。</p>
+<p><a href="http://ormlite.com/">官网</a></p>
+<p>为什么要用ormlite？
+先说说优点</p>
+<pre><code>轻量级
+使用简单，易上手
+封装完善
+文档全面
+</code></pre>
+
+<p>缺点</p>
+<pre><code>基于反射，效率较低
+缺少中文翻译文档
+</code></pre>
+
+<h2 id=2>使用过程</h2>
+<p><strong>1. 添加依赖</strong></p>
+<p>根据ORMLite的官方使用说明，一般需要添加两个依赖：</p>
+<pre><code>compile 'com.j256.ormlite:ormlite-core:5.0' // 这个包提供了JDBC和Android的核心功能包
+compile 'com.j256.ormlite:ormlite-android:5.0' // 这个包提供了Android的特定功能
+</code></pre>
+
+<p><strong>2. 定义数据库的帮助类</strong></p>
+<p>帮助类继承自OrmLiteSqliteOpenHelper，主要是帮助我们进行数据库表的创建和更新。</p>
+<pre><code>// 继承自OrmLiteSqliteOpenHelper
+public class DBHelp extends OrmLiteSqliteOpenHelper{
+
+    // 数据库的名称
+    private static final String DB_NAME=&quot;repo_favorite.db&quot;;
+
+    // 数据库版本
+    private static final int VERSION = 2;
+
+    private static DBHelp dbHelp;
+    private Context context;
+
+    // 实现单例化
+    public static synchronized DBHelp getInstance(Context context){
+        if (dbHelp==null){
+            dbHelp = new DBHelp(context.getApplicationContext());
+        }
+        return dbHelp;
+    }
+
+    private DBHelp(Context context) {
+        super(context, DB_NAME, null, VERSION);
+        this.context = context;
+    }
+
+    // onCreate方法里面会进行数据库的创建，在这里面我们同时可以实现数据库表的创建及数据库表的数据填充
+    @Override
+    public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
+
+    }
+
+    // 对数据库的表进行更新，一般常用方法就是先删除，再创建。
+    @Override
+    public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
+
+    }
+}
+</code></pre>
+
+<p><strong>3. 创建数据库表</strong></p>
+<p>在Android中利用ORMLite框架创建数据库表，是创建一个实体类，利用注解的方式表明其为数据库中的一张表，实体类里面的所有成员变量都可以设置为表中的字段，也是利用注解的方式来表明的。举个栗子：</p>
+<pre><code>// 在实体类的上面利用注解表明他是我们数据库里面的一张表，并设置表名。
+@DatabaseTable(tableName = &quot;repostiory_group&quot;)
+public class RepoGroup {
+
+    // 这是个主键
+    @DatabaseField(id = true)
+    private int id;
+
+    @DatabaseField(columnName = &quot;NAME&quot;)
+    private String name;
+
+    @Override
+    public String toString() {
+        return &quot;RepoGroup{&quot; +
+                &quot;id=&quot; + id +
+                &quot;, name='&quot; + name + '\'' +
+                '}';
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+</code></pre>
+
+<blockquote>
+<p>常用注解说明：</p>
+<ol>
+<li>@DatabaseTable(tableName = &quot;local_repo&quot;)在实体类上面定义，表明这个实体类是数据库的一张表，并且可以利用tableName设置表名</li>
+<li>@DatabaseField 表明这个变量是数据库表里面的一个字段。里面涉及到几个内容：</li>
+</ol>
+<p><code>id=true</code>表明这个是一个主键，如果指定为generatedId，表示自动增长id，我们不需要给它赋值。</p>
+<p><code>columnName=&quot;&quot;</code>这个表示我们为其字段指定一个字段名，一般不指定的时候就是默认的变量名。</p>
+<p><code>foreign = true</code>表明是一个外键，就是关联了数据库中另外的一张表，这个字段的信息就是另外一张表里面的某一条信息。</p>
+</blockquote>
+<p><strong>4. 定义数据库表的操作类</strong></p>
+<p>数据库和表都有了之后，定义一个操作类DAO，对数据库里面的表进行操作：添、删、改、查的操作，需要注意的是，是定义一个表的操作类，所以表和表的操作类是一一对应的关系。</p>
+<pre><code>// 某一表的操作类
+public class RepoGroupDao {
+
+// 通过之前定义的数据库的帮助类来帮我们完成操作类的实例化
+private Dao&lt;LocalRepo,Long&gt; dao;
+public LocalRepoDao(DBHelp dbHelp) {
+    try {
+        dao = dbHelp.getDao(LocalRepo.class);
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+}
+
+/**
+ * 添加和更新单条数据
+ */
+public void createOrUpdate(LocalRepo localRepo){
+    try {
+        dao.createOrUpdate(localRepo);
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+}
+
+/**
+ * 添加和更新多条数据
+ */
+public void createOrUpdate(List&lt;LocalRepo&gt; list){
+    for (LocalRepo localrepo:list) {
+        createOrUpdate(localrepo);
+    }
+}
+
+/**
+ * 删除某一条数据
+ */
+public void delete(LocalRepo localrepo){
+    try {
+        dao.delete(localrepo);
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+}
+
+/**
+ * 修改某一条数据
+ */
+public void update(LocalRepo localrepo){
+    try {
+        dao.update(localrepo);
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+}
+
+/**
+ * 查询---根据条件查询（id查询）
+ */
+public List&lt;LocalRepo&gt; queryForGroupId(int groupId){
+    try {
+        return dao.queryForEq(LocalRepo.COLUMN_GROUP_ID,groupId);
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+}
+
+/**
+ * 查询---根据条件查询：利用where()方法来自定义查询
+ */
+public List&lt;LocalRepo&gt; queryNoGroup(){
+    try {
+        return dao.queryBuilder().where().isNull(LocalRepo.COLUMN_GROUP_ID).query();
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+}
+
+/**
+ * 查询所有的数据
+ */
+public List&lt;LocalRepo&gt; queryAll(){
+    try {
+        return dao.queryForAll();
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+}
+</code></pre>
+
+<blockquote>
+<p>上述代码中就是常用的增删改查的操作。</p>
+</blockquote>
+<p><strong>5. 使用</strong></p>
+<p>初始化DBHelp帮助类和DAO的操作类，即可以实现根据数据对数据库进行操作。</p>
+<h2 id=3>使用总结及场景</h2>
+<p><strong>使用流程总结及注意事项：</strong></p>
+<ol>
+<li>添加依赖</li>
+<li>数据库帮助类：帮我们完成数据库的创建及更新，注意点：数据库中做更新之后，不更改版本号，不会自动做数据库更新。</li>
+<li>数据库表：因为是对象关系映射，所以创建实体类作为表，注意点：一定要注解指定它是数据库表。</li>
+<li>数据库表操作类：对数据库表实现添删改查的操作，注意点：一个操作类Dao对应一个表，仅对一个表进行操作，是一对一的关系。</li>
+</ol>
+<p><strong>数据库使用场景：</strong></p>
+<p>数据存储：本地存储、本地收藏、浏览历史等。</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
